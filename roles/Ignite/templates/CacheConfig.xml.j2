@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CacheConfig xmlns="http://www.tibco.com/mdm/config/cacheConfig/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Description="The cache configuration setup">
+	<ServerConfig>
+		<Name>Large configuration</Name>
+		<CacheServerCount>1</CacheServerCount>
+		<CharSet>singlebyte</CharSet>
+		<!--
+ Change the Memory as high as you can. Then review the debug log to see if all memory is used. Change the allocation of the caches which have limits to get 
+        balanced distribution. As RECORD size is large compared to others, when more memory is added, increase limit for record and reduce others. 
+		-->
+		<!-- if any of the caches have -1 as list size and limit is not specified, it means unlimited caches. These caches are not included in the memory computation. Dont includ such memory here -->
+		<!-- though limit can be specified for limit caches, it is not recommended. Specify list size. -->
+		<Memory>10480</Memory>
+		<HeapStorage>650</HeapStorage>
+		<OverHead>1.3</OverHead>
+		<ReplicationCount>0</ReplicationCount>
+		<RowOverHead>2170</RowOverHead>
+		<MinimumSeederRequiredForPreload>1</MinimumSeederRequiredForPreload>
+	</ServerConfig>
+	<!-- Count of entries between some critical caches should be as follows -->
+	<!-- RECORD:SYNCRECORD = 2:1 -->
+	<!-- RECORD:SYNCLOG = 2:1 -->
+	<!-- RECORD:PRODUCTKEY = 2:1 -->
+	<!-- RECORD:RECORDMAXMODVERSION = 1:1.2 -->
+	<!-- This memory is good upto 400 K records. More memory, more records. -->
+	<!--
+ Large configuration stats
+    50 repo per enteprise
+    10 input maps per repo
+    10 output maps per repo
+    5 enterprises
+    40 data sources per enterprise
+    20 sync profiles per enterprise
+    10 sync formats per enteprise
+    300 users per enterprise
+    2 workitem summary preferences per user
+    24 concurent events per server, another 20000 in process
+    15000 running processes
+	-->
+	<!-- List size of -1 can be used for distributed caches to indicate that cache be unlimited -->
+	<!-- All LOCAL* except LOCALSUBCATALOG and LOCALLOCKS are used only if in-memory workflows are enabled. -->
+	<CacheList>
+		<Cache>
+			<Name>CATALOGDECLARATION</Name>
+			<Description>Used to store attribute declarations for rulebase usage. One entry per repository and per datasource</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>10000</SingleByteObjectSize>
+			<MultiByteObjectSize>15000</MultiByteObjectSize>
+			<ListSize>500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CATALOGATTRIBUTEDATATYPES</Name>
+			<Description>Entries from CatalogAttributeDataType table, stored as one entry.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>50</SingleByteObjectSize>
+			<MultiByteObjectSize>70</MultiByteObjectSize>
+			<ListSize>2</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CODEDEFNS</Name>
+			<Description>Entries from ProtocolCodes database table. The entries are used to normalize mlxml document</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>100</MultiByteObjectSize>
+			<ListSize>300</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CUSTOMPAGEURLS</Name>
+			<Description>Mapping table for custom URL pages to allow custom pages to be invoked instead of out of box UI screens. Just one entry</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>1000</SingleByteObjectSize>
+			<MultiByteObjectSize>1400</MultiByteObjectSize>
+			<ListSize>2</ListSize>
+		</Cache>
+		<Cache>
+			<Name>DATASOURCE</Name>
+			<Description>Stores data source metadata and also intermediate computed results for rulebases. This will be separated in future. Data source meta data = 200, results = 5000</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>500</SingleByteObjectSize>
+			<MultiByteObjectSize>720</MultiByteObjectSize>
+			<ListSize>2500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>DOMAINENTRY</Name>
+			<Description>Entries from DOMAINENTRY table. One per domain type</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>3000</SingleByteObjectSize>
+			<MultiByteObjectSize>4000</MultiByteObjectSize>
+			<ListSize>200</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALATTRIBUTELOG</Name>
+			<Description>Attributes logs  for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>4000</SingleByteObjectSize>
+			<MultiByteObjectSize>5000</MultiByteObjectSize>
+			<ListSize>2000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALEVENT</Name>
+			<Description>Events for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>200</SingleByteObjectSize>
+			<MultiByteObjectSize>350</MultiByteObjectSize>
+			<ListSize>200</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALEVENTDETAIL</Name>
+			<Description>Event details entries, one map per event, for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>900</SingleByteObjectSize>
+			<MultiByteObjectSize>1500</MultiByteObjectSize>
+			<ListSize>200</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALLOCKS</Name>
+			<Description>Synchronization of file writes during publish</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>130</MultiByteObjectSize>
+			<ListSize>100</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALMLXMLDOC</Name>
+			<Description>Work docs for processes in n-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>4000</SingleByteObjectSize>
+			<MultiByteObjectSize>5000</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALPROCESS</Name>
+			<Description>Process objects for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>90</SingleByteObjectSize>
+			<MultiByteObjectSize>120</MultiByteObjectSize>
+			<ListSize>300</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALPROCESSDETAIL</Name>
+			<Description>Process details, one per process, for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>210</SingleByteObjectSize>
+			<MultiByteObjectSize>300</MultiByteObjectSize>
+			<ListSize>300</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALPROCESSLOG</Name>
+			<Description>Process Logs, 15 per process, for in-memory workflows.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>9000</SingleByteObjectSize>
+			<MultiByteObjectSize>12000</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALPROCESSSTATE</Name>
+			<Description>Process State data, one per process, for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>9500</SingleByteObjectSize>
+			<MultiByteObjectSize>10500</MultiByteObjectSize>
+			<ListSize>300</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALPRODUCTLOG</Name>
+			<Description>Product logs, one per event, 100 logs per entry, for in-memory workflows.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>60000</SingleByteObjectSize>
+			<MultiByteObjectSize>640000</MultiByteObjectSize>
+			<ListSize>300</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALRECORD</Name>
+			<Description>Local copy of record, for in memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>1400</SingleByteObjectSize>
+			<MultiByteObjectSize>2100</MultiByteObjectSize>
+			<ListSize>25000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALRECORDLIST</Name>
+			<Description>Local copy of record lists, each containing many entries, for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>25000</SingleByteObjectSize>
+			<MultiByteObjectSize>40000</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALRECORDKEYLIST</Name>
+			<Description>Local copy of record list, for merge activities, for in-memory workflows</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>5000</SingleByteObjectSize>
+			<MultiByteObjectSize>7000</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>LOCALSUBCATALOG</Name>
+			<Description>Keys for sub catalog, session specific.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>120</MultiByteObjectSize>
+			<ListSize>600</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MQJAVAEVAL</Name>
+			<Description>Cache condition wrappers for Java transition conditions. Avoids creation of objects</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>3000</SingleByteObjectSize>
+			<MultiByteObjectSize>4400</MultiByteObjectSize>
+			<ListSize>250</ListSize>
+		</Cache>
+		<Cache>
+			<Name>NEUTRALIZEDXPATHPROPS</Name>
+			<Description>Entries from xpath.props file, used for extraction of data from incoming messages</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>200</MultiByteObjectSize>
+			<ListSize>200</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PROCESSDEFN</Name>
+			<Description>Parsed workflow definitions</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>11000</SingleByteObjectSize>
+			<MultiByteObjectSize>13000</MultiByteObjectSize>
+			<ListSize>400</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PRODUCT</Name>
+			<Description>Session specific record data. For each session, 3-5 entries are stored.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>2000</SingleByteObjectSize>
+			<MultiByteObjectSize>3200</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RECORDBUNDLE</Name>
+			<Description>Session specific record bundles. For each session, 1-2 entries are stored.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>7000</SingleByteObjectSize>
+			<MultiByteObjectSize>9500</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RULEBASE</Name>
+			<Description>Parsed definitions of rulebase files.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>12000</SingleByteObjectSize>
+			<MultiByteObjectSize>15000</MultiByteObjectSize>
+			<ListSize>700</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RULEENGINE</Name>
+			<Description>Initialized instances of rule engine, one entry per ruleset.</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>12000</SingleByteObjectSize>
+			<MultiByteObjectSize>15000</MultiByteObjectSize>
+			<ListSize>700</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RULEBASERESULTS</Name>
+			<Description>Session specific information for UI. Used to speed up record UI by caching rulebase results and avoid rule execution</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>8000</SingleByteObjectSize>
+			<MultiByteObjectSize>9300</MultiByteObjectSize>
+			<ListSize>2000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RESOURCEACCESSLIST</Name>
+			<Description>Entries from RESOURCEACCESS table. Stored as two lists per resource type</Description>
+			<Type>local</Type>
+			<SingleByteObjectSize>1200</SingleByteObjectSize>
+			<MultiByteObjectSize>1500</MultiByteObjectSize>
+			<ListSize>30</ListSize>
+		</Cache>
+		<!-- Near caches -->
+		<Cache>
+			<Name>ASSOCSCHEMES</Name>
+			<Description>List of schemes for repository. One entry per version, per repo.</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>26058</SingleByteObjectSize>
+			<MultiByteObjectSize>38978</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CATALOG</Name>
+			<Description>Repository meta data objects. 2 entries per repository, + one for each version, also includes output map</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>2438</SingleByteObjectSize>
+			<MultiByteObjectSize>3635</MultiByteObjectSize>
+			<ListSize>1200</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CATALOGEDITION</Name>
+			<Description>Sync profile objects. 3 entries per profile</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>6375</SingleByteObjectSize>
+			<MultiByteObjectSize>9675</MultiByteObjectSize>
+			<ListSize>700</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CATALOGEDITIONVALUE</Name>
+			<Description>Derived Sync profile objects. 1 entry per profile</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>9644</SingleByteObjectSize>
+			<MultiByteObjectSize>11700</MultiByteObjectSize>
+			<ListSize>450</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CATALOGFORMATS</Name>
+			<Description>Synchronization formats. One entry per format</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>2500</SingleByteObjectSize>
+			<MultiByteObjectSize>3200</MultiByteObjectSize>
+			<ListSize>500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CATALOGINPUTMAP</Name>
+			<Description>Input map objects. 3 entries per map</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>2864</SingleByteObjectSize>
+			<MultiByteObjectSize>4522</MultiByteObjectSize>
+			<ListSize>7500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CONFIGDEFINITION</Name>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>120</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>2000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CONFIGDEFINITIONLIST</Name>
+			<Description>Entries from configurationdefinition table, one per selector/type/owner.</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>470</SingleByteObjectSize>
+			<MultiByteObjectSize>620</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CONFIGURATIONDOCUMENT</Name>
+			<Description>Sticky configuration definitions for member. 5-10 per member.</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>3429</SingleByteObjectSize>
+			<MultiByteObjectSize>4143</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>ENTERPRISE</Name>
+			<Description>Enterprise objects. 2 entries per enterprise.</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>500</SingleByteObjectSize>
+			<MultiByteObjectSize>742</MultiByteObjectSize>
+			<ListSize>50</ListSize>
+		</Cache>
+		<Cache>
+			<Name>HTTP</Name>
+			<Description>HTTP objects defined for companies, 1 entry per address</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>200</SingleByteObjectSize>
+			<MultiByteObjectSize>200</MultiByteObjectSize>
+			<ListSize>50</ListSize>
+			<LockWaitTime>-1</LockWaitTime>
+		</Cache>
+		<Cache>
+			<Name>MEMBER</Name>
+			<Description>Member objects. 2-3 entries per member</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>18555</SingleByteObjectSize>
+			<MultiByteObjectSize>27823</MultiByteObjectSize>
+			<ListSize>7000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>ROLE</Name>
+			<Description>ROLE objects. 2-3 entries per role</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>1936</SingleByteObjectSize>
+			<MultiByteObjectSize>2816</MultiByteObjectSize>
+			<ListSize>500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MEMBERORG</Name>
+			<Description>Derived data which is combination of Member and Organization data. 1 entry per member.</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>1224</SingleByteObjectSize>
+			<MultiByteObjectSize>1824</MultiByteObjectSize>
+			<ListSize>3000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>ORGANIZATION</Name>
+			<Description>Organization object. 2 entries per organization</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>9747</SingleByteObjectSize>
+			<MultiByteObjectSize>14596</MultiByteObjectSize>
+			<ListSize>300</ListSize>
+		</Cache>
+		<Cache>
+			<Name>OUTPUTMAPLIST</Name>
+			<Description>Output maps defined for a repository. One entry per repository</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>7083</SingleByteObjectSize>
+			<MultiByteObjectSize>10435</MultiByteObjectSize>
+			<ListSize>700</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PRELOADSTATUS</Name>
+			<Description>Keeps status of preload of each object and repositories, should never be evicted</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>44</SingleByteObjectSize>
+			<MultiByteObjectSize>44</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>PROCESSDEFNSELECTION</Name>
+			<Description>Cached results of business rules for selection of workflows. One per possible combination of selection criterion</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>120</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RECORDCOLLECTION</Name>
+			<Description>Record collection objects</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>733</SingleByteObjectSize>
+			<MultiByteObjectSize>1093</MultiByteObjectSize>
+			<ListSize>50000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RELATEDMAPS</Name>
+			<Description>All maps related to input or output maps, i.e. bundle of maps, one per map</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>7861</SingleByteObjectSize>
+			<MultiByteObjectSize>11577</MultiByteObjectSize>
+			<ListSize>2500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RELATIONSHIPMETADATA</Name>
+			<Description>Currently stores meta data for repository (relationship definitions) and also intermediate filtered results for user sessions. This should be separated. Meta data - 1 entry per repository, filtered list - 1 per active UI/webservice sessions per repository</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>1000</SingleByteObjectSize>
+			<MultiByteObjectSize>1500</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RULEENGINEATTRIBUTEINFO</Name>
+			<Description>Attribute info parsed from rule meta model definitions. One entry per rule meta model</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>2831</SingleByteObjectSize>
+			<MultiByteObjectSize>3746</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>SECUREDATTRIBUTEGROUP</Name>
+			<Description>Filtered list of attribute groups for a repository, sync format and output map. 1 entry per member per object</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>4108</SingleByteObjectSize>
+			<MultiByteObjectSize>6144</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>ATTRIBUTEGROUP</Name>
+			<Description>Attribute groups for a repository, 1 entry per repository</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>4108</SingleByteObjectSize>
+			<MultiByteObjectSize>6144</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>SECURITYPERMISSIONS</Name>
+			<Description>List of permissions for a member. 1 entry per member.</Description>
+			<Type>near</Type>
+			<SingleByteObjectSize>412</SingleByteObjectSize>
+			<MultiByteObjectSize>602</MultiByteObjectSize>
+			<ListSize>3500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>WORKITEMFORM</Name>
+			<Description>Entries from workflowform table. 2 entries per form</Description>
+			<Type>near</Type>
+			<!-- This should be local?-->
+			<SingleByteObjectSize>7756</SingleByteObjectSize>
+			<MultiByteObjectSize>10112</MultiByteObjectSize>
+			<ListSize>500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>WORKITEMPREFERENCES</Name>
+			<Description>Workitem summary preferences for members. 1-3 entries per users</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>69</SingleByteObjectSize>
+			<MultiByteObjectSize>103</MultiByteObjectSize>
+			<ListSize>6000</ListSize>
+		</Cache>
+		<!-- distributed caches -->
+		<Cache>
+			<Name>ACTIVITYRECORDCOUNTER</Name>
+			<Description>Counters to decide when activity should be restarted. Should not be evicted.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>15</SingleByteObjectSize>
+			<MultiByteObjectSize>15</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+		</Cache>
+		<Cache>
+			<Name>ATTRIBUTELOG</Name>
+			<Description>Attribute log entries for a processlog</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>24062</SingleByteObjectSize>
+			<MultiByteObjectSize>36146</MultiByteObjectSize>
+			<Limit>3.0</Limit>
+		</Cache>
+		<Cache>
+			<Name>ATTRIBUTEHISTORY</Name>
+			<Description>Attribute change history</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>150</SingleByteObjectSize>
+			<MultiByteObjectSize>200</MultiByteObjectSize>
+			<Limit>0.3</Limit>
+		</Cache>
+		<Cache>
+			<Name>CLASSIFICATIONCODE</Name>
+			<Description>Classification code objects</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>200</SingleByteObjectSize>
+			<MultiByteObjectSize>350</MultiByteObjectSize>
+			<!-- if moved to distributed, use list size -1 -->
+			<!--
+ListSize>-1</ListSize
+			-->
+			<ListSize>100000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>CLASSIFICATIONCODEATTRIBUTE</Name>
+			<Description>Attributes mapped to classification codes. 1-2 entries per code (some codes dont have it, some have more than 2)</Description>
+			<Type>near</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>200</MultiByteObjectSize>
+			<!-- if moved to distributed, use list size -1 -->
+			<!--
+ListSize>-1</ListSize
+			-->
+			<ListSize>100000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>COUNTERS</Name>
+			<Description>Utility counters. Should not be evicted.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>20</SingleByteObjectSize>
+			<MultiByteObjectSize>20</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+		</Cache>
+		<Cache>
+			<!-- If you are generating a lot of change notifications, consider increasing this -->
+			<Name>CHANGENOTIFICATION</Name>
+			<Description>Change notification entries if stored in cache.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>4600</SingleByteObjectSize>
+			<MultiByteObjectSize>7000</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+			<ExpirationTime>1000</ExpirationTime>
+		</Cache>
+		<Cache>
+			<Name>COMPUTEDSUMMARY</Name>
+			<Description>Computed event summaries, scratch pad.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>500</SingleByteObjectSize>
+			<MultiByteObjectSize>650</MultiByteObjectSize>
+			<ListSize>1000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>EVENT</Name>
+			<Description>Event objects.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>175</SingleByteObjectSize>
+			<MultiByteObjectSize>235</MultiByteObjectSize>
+			<ListSize>20000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>EVENTDETAIL</Name>
+			<Description>Event details for events, 1 entry per event which is a list of details</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>2729</SingleByteObjectSize>
+			<MultiByteObjectSize>4089</MultiByteObjectSize>
+			<ListSize>20000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>FAILOVERMARKER</Name>
+			<Description>To detect if a task needs to be repeated. Should never be evicted.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>44</SingleByteObjectSize>
+			<MultiByteObjectSize>44</MultiByteObjectSize>
+			<!--
+ListSize>10000</ListSize
+			-->
+			<ListSize>-1</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>FILELOCK</Name>
+			<Description>General cache for acquiring locks on files.</Description>
+			<!-- why is whole cache locked? why not lock for each file? -->
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>120</SingleByteObjectSize>
+			<MultiByteObjectSize>120</MultiByteObjectSize>
+			<!--
+ListSize>100</ListSize
+			-->
+			<ListSize>-1</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>GOLDENCOPY</Name>
+			<Description>Only used for locking entire goldencopy table. No objects are stored.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>8</SingleByteObjectSize>
+			<MultiByteObjectSize>8</MultiByteObjectSize>
+			<ListSize>10</ListSize>
+		</Cache>
+		<Cache>
+			<Name>INMEMORYQUEUEENTRY</Name>
+			<Description>Cached queue entries, two maps</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>10000</SingleByteObjectSize>
+			<MultiByteObjectSize>12000</MultiByteObjectSize>
+			<ListSize>50</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>IMPORTRESULTS</Name>
+			<Description>Intermediate results for import staging data</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>20</SingleByteObjectSize>
+			<MultiByteObjectSize>30</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>IMPORTEDRECORDS</Name>
+			<Description>Intermediate records for import staging</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>1000</SingleByteObjectSize>
+			<MultiByteObjectSize>1200</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>JMX_CACHESTATS</Name>
+			<Description>This space is used to store values reported in JMX for various caches</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_DBSTATS</Name>
+			<Description>This space is used to store values reported in JMX for database stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>175</SingleByteObjectSize>
+			<MultiByteObjectSize>175</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_FILESTATS</Name>
+			<Description>This space is used to store values reported in JMX for file creation activity</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_HTTPSTATS</Name>
+			<Description>This space is used to store values reported in JMX for HTTP</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>175</SingleByteObjectSize>
+			<MultiByteObjectSize>175</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_LOGINSTATS</Name>
+			<Description>This space is used to store values reported in JMX for Login</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>175</SingleByteObjectSize>
+			<MultiByteObjectSize>175</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_LOGINATTEMPTS</Name>
+			<Description>This space is used to store login attempts reported in JMX for Login</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>175</SingleByteObjectSize>
+			<MultiByteObjectSize>175</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_RULEBASECONSTSTATS</Name>
+			<Description>This space is used to store values reported in JMX for rulebase constraint stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_RULEBASEEXECSTATS</Name>
+			<Description>This space is used to store values reported in JMX for each rulebase stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_RULEBASESTATS</Name>
+			<Description>This space is used to store values reported in JMX for rulebase overall stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_TEXTINDEXSTATS</Name>
+			<Description>This space is used to store values reported in JMX for indexing</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_TEXTINDEXENTITYSTATS</Name>
+			<Description>This space is used to store values reported in JMX for indexed entities</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_WEBSERVICESTATS</Name>
+			<Description>This space is used to store values reported in JMX for web services</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>175</SingleByteObjectSize>
+			<MultiByteObjectSize>175</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_WORKFLOWACTIVITYSTATS</Name>
+			<Description>This space is used to store values reported in JMX for workflow activity stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_WORKFLOWEXECSTATS</Name>
+			<Description>This space is used to store values reported in JMX for each workflow stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_WORKFLOWSTATS</Name>
+			<Description>This space is used to store values reported in JMX for workflow overall stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_CACHELOCKSTATS</Name>
+			<Description>This space is used to store values reported in JMX for each cache lock stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>JMX_CACHELOCKSUMMARYSTATS</Name>
+			<Description>This space is used to store values reported in JMX for cache lock overall stats</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>250</SingleByteObjectSize>
+			<MultiByteObjectSize>250</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MASSUPDATE</Name>
+			<Description>Session specific data for mass update.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>8000</SingleByteObjectSize>
+			<MultiByteObjectSize>12000</MultiByteObjectSize>
+			<ListSize>2000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MATCHEROUTPUT</Name>
+			<Description>Intermediate data for matcher activity, specific for a process log</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>814</SingleByteObjectSize>
+			<MultiByteObjectSize>1221</MultiByteObjectSize>
+			<ListSize>5000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MLXMLDOC</Name>
+			<Description>Cached document images</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>3000</SingleByteObjectSize>
+			<MultiByteObjectSize>4000</MultiByteObjectSize>
+			<ListSize>20000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PRINCIPALKEY</Name>
+			<Description>Only used for locking entire principalKey table. No objects are stored.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>88</SingleByteObjectSize>
+			<MultiByteObjectSize>88</MultiByteObjectSize>
+			<ListSize>2</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PRODUCTKEY</Name>
+			<Description>Product keys, 2 per key</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>1036</SingleByteObjectSize>
+			<MultiByteObjectSize>1546</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+			<!--
+Limit>6.0</Limit
+			-->
+			<EvictionPolicy>LRU</EvictionPolicy>
+			<LockWaitTime>-1</LockWaitTime>
+		</Cache>
+		<Cache>
+			<Name>PROCESS</Name>
+			<Description>Process entries.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>169</SingleByteObjectSize>
+			<MultiByteObjectSize>229</MultiByteObjectSize>
+			<ListSize>20000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PROCESSDETAIL</Name>
+			<Description>Process details, one per process.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>4600</SingleByteObjectSize>
+			<MultiByteObjectSize>7000</MultiByteObjectSize>
+			<ListSize>20000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PROCESSLOG</Name>
+			<Description>Process log entries.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>9000</SingleByteObjectSize>
+			<MultiByteObjectSize>12000</MultiByteObjectSize>
+			<ListSize>100000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PROCESSSTATE</Name>
+			<Description>Process state entries.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>9500</SingleByteObjectSize>
+			<MultiByteObjectSize>10500</MultiByteObjectSize>
+			<ListSize>20000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>QUEUELOCK</Name>
+			<Description>Used to serialize access to process state objects. No objects are stored.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>88</SingleByteObjectSize>
+			<MultiByteObjectSize>88</MultiByteObjectSize>
+			<!--
+ListSize>30</ListSize
+			-->
+			<ListSize>-1</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+			<LockWaitTime>-1</LockWaitTime>
+		</Cache>
+		<Cache>
+			<Name>RECORD</Name>
+			<Description>Records. 3-4 entries per record.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>1300</SingleByteObjectSize>
+			<MultiByteObjectSize>2000</MultiByteObjectSize>
+			<!--
+Limit>67.0</Limit
+			-->
+			<ListSize>-1</ListSize>
+			<ExpirationTime>-1</ExpirationTime>
+			<EvictionPolicy>LRU</EvictionPolicy>
+			<LockWaitTime>-1</LockWaitTime>
+			<LockExpirationTime>-1</LockExpirationTime>
+		</Cache>
+		<Cache>
+			<Name>RECORDALIAS</Name>
+			<Description>Business keys. Avg 0.2 per record.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>200</SingleByteObjectSize>
+			<MultiByteObjectSize>350</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+			<!--
+Limit>1.0</Limit
+			-->
+		</Cache>
+		<Cache>
+			<Name>RECORDITEM</Name>
+			<Description>Entries in record list for a record collection</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>88</SingleByteObjectSize>
+			<MultiByteObjectSize>88</MultiByteObjectSize>
+			<ListSize>50000</ListSize>
+			<LockWaitTime>-1</LockWaitTime>
+		</Cache>
+		<Cache>
+			<Name>RECORDKEYLIST</Name>
+			<Description>Temporary record key lists for merge activities</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>5000</SingleByteObjectSize>
+			<MultiByteObjectSize>7000</MultiByteObjectSize>
+			<ListSize>50000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RECORDMAXMODVERSION</Name>
+			<Description>max versions for a record. 3-5 entries per record.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>32</SingleByteObjectSize>
+			<MultiByteObjectSize>32</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+			<Limit>0.5</Limit>
+		</Cache>
+		<Cache>
+			<Name>RELATIONSHIP</Name>
+			<Description>Unused. Reserved for relationship caching</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>560</SingleByteObjectSize>
+			<MultiByteObjectSize>819</MultiByteObjectSize>
+			<ListSize>1</ListSize>
+		</Cache>
+		<Cache>
+			<Name>RELATIONSHIPRECORD</Name>
+			<Description>Relationship records. 1 per relationships/per 2 records. Adjust according to needs.</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>300</SingleByteObjectSize>
+			<MultiByteObjectSize>450</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+			<!--
+Limit>4.0</Limit
+			-->
+		</Cache>
+		<Cache>
+			<Name>SAVELOCK</Name>
+			<Description>General cache for acquiring lock on records to serialize updates. Whole cache is locked</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>88</SingleByteObjectSize>
+			<MultiByteObjectSize>88</MultiByteObjectSize>
+			<!--
+ListSize>5000</ListSize
+			-->
+			<ListSize>-1</ListSize>
+			<EvictionPolicy>NONE</EvictionPolicy>
+		</Cache>
+		<Cache>
+			<Name>SEARCHCRITERIA</Name>
+			<Description>Browse search criterion, active session specific</Description>
+			<!-- why is it distributed? should it not be local? -->
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>774</SingleByteObjectSize>
+			<MultiByteObjectSize>1161</MultiByteObjectSize>
+			<ListSize>2000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>SYNCLOG</Name>
+			<Description>Synchronization logs</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>220</SingleByteObjectSize>
+			<MultiByteObjectSize>320</MultiByteObjectSize>
+			<Limit>3.0</Limit>
+		</Cache>
+		<Cache>
+			<Name>SYNCRECORD</Name>
+			<Description>Synchronized record data. 1 entry per synchronized record per system, per format, per data pool</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>1320</SingleByteObjectSize>
+			<MultiByteObjectSize>1920</MultiByteObjectSize>
+			<Limit>3.0</Limit>
+			<LockWaitTime>-1</LockWaitTime>
+		</Cache>
+		<Cache>
+			<Name>WORKITEM</Name>
+			<Description>Workitems, 2 per workitem</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>12496</SingleByteObjectSize>
+			<MultiByteObjectSize>18836</MultiByteObjectSize>
+			<ListSize>50000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>WORKITEMDETAIL</Name>
+			<Description>Workitem details, 1 list per workitem</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>8328</SingleByteObjectSize>
+			<MultiByteObjectSize>12488</MultiByteObjectSize>
+			<ListSize>50000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>WORKITEMDOC</Name>
+			<Description>Cached document image for workitem forms, for closure</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>1054</SingleByteObjectSize>
+			<MultiByteObjectSize>2244</MultiByteObjectSize>
+			<ListSize>3000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>WORKITEMLOCK</Name>
+			<Description>Lock entries for workitem. 1 per group of workitems (processlog)</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>208</SingleByteObjectSize>
+			<MultiByteObjectSize>288</MultiByteObjectSize>
+			<ListSize>50000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>WORKITEMUSERSUMMARY</Name>
+			<Description>Computed workitem summary for users. 1 per preference</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>243</SingleByteObjectSize>
+			<MultiByteObjectSize>365</MultiByteObjectSize>
+			<ListSize>6000</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MDMLOCKSPACE</Name>
+			<Description>This space maintains MDM locks</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>548</SingleByteObjectSize>
+			<MultiByteObjectSize>818</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+		</Cache>
+		<Cache>
+			<Name>MV_VALUE</Name>
+			<Description>MV_VALUE</Description>
+			<Type>distributed</Type>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>150</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PERSPECTIVE</Name>
+			<Description>This space maintains Perspective data</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>240</SingleByteObjectSize>
+			<MultiByteObjectSize>320</MultiByteObjectSize>
+			<ListSize>50</ListSize>
+		</Cache>
+		<Cache>
+			<Name>KEYVALUESPACE</Name>
+			<Description>This space maintains key value pairs for general purpose</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>10</SingleByteObjectSize>
+			<MultiByteObjectSize>15</MultiByteObjectSize>
+			<ExpirationTime>3600000</ExpirationTime>
+			<ListSize>10000</ListSize>
+		</Cache>
+        <Cache> 
+			<Name>BUNDLE</Name>
+			<Description>This space contains global record bundles as cache</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>3000</SingleByteObjectSize>
+			<MultiByteObjectSize>4500</MultiByteObjectSize>
+			<ListSize>500</ListSize>
+		</Cache>
+		<Cache>
+			<Name>PASSWORDMODDATE</Name>
+			<Description>This space maintains key value pairs for general purpose</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>20</SingleByteObjectSize>
+			<MultiByteObjectSize>30</MultiByteObjectSize>
+			<ListSize>10000</ListSize>
+		</Cache>
+		<Cache> 
+			<Name>DATAQUALITY</Name>
+			<Description>This space This space maintains data quality score info</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>200</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+		</Cache>
+		<Cache> 
+			<Name>DATAQUALITYSUMMARY</Name>
+			<Description>This space maintains data quality summary info</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>100</SingleByteObjectSize>
+			<MultiByteObjectSize>200</MultiByteObjectSize>
+			<ListSize>-1</ListSize>
+		</Cache>		
+		<Cache> 
+			<Name>SUMMARY_QUERY</Name>
+			<Description>This space maintains MDM queries summary info</Description>
+			<Type>distributed</Type>
+			<ReplicationCount>0</ReplicationCount>
+			<SingleByteObjectSize>90</SingleByteObjectSize>
+			<MultiByteObjectSize>120</MultiByteObjectSize>
+			<!-- Assummed every minute statistics will be copied. Storing data for 30 days-->
+			<ListSize>43200</ListSize>
+			<Indexes>
+			   <Index>
+				  <Name>INDXRUNDATE</Name>
+				  <Type>TREE</Type>
+				  <Columns>
+					 <Column>RUNDATE</Column>
+				  </Columns>
+			   </Index>
+			</Indexes>
+		</Cache>
+	</CacheList>
+</CacheConfig>

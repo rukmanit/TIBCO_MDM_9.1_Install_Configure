@@ -1,0 +1,6 @@
+jvm_min: 2048m
+jvm_max: 2048m
+meta_space: 256m
+install_mdm_dir: 
+mdm_root_dir:  # default value for non-Cluster installation.
+install_wildfly_dir: 

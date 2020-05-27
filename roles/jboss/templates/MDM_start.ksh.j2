@@ -1,0 +1,14 @@
+#!/bin/ksh
+DATE=`date +%m%d%y`
+TIME=`date +%H%M%S`
+
+
+source {{ install_wildfly_dir }}/setEnv.sh
+echo "$DATE:$TIME + Starting MDM"
+
+rm -rf "${JBOSS_HOME}/standalone/tmp"
+#IP=`ifconfig | grep -A 1 'eno16777984'|tail -1 |awk '{$1=$1};1'|cut -d ' ' -f 2`
+
+echo $JBOSS_HOME
+cd $JBOSS_HOME/bin
+nohup ./standalone.sh -b {{ ansible_hostname }} -c standalone.xml -Djboss.server.base.dir=../standalone -Djboss.node.name=$NODE_ID -Dorg.apache.xml.dtm.DTMManager="org.apache.xml.dtm.ref.DTMManagerDefault" > $JBOSS_HOME/standalone/log/nohup.out 2>&1 &

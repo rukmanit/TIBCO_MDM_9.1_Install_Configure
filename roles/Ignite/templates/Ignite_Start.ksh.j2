@@ -1,0 +1,11 @@
+#!/bin/ksh
+DATE=`date +%m%d%y`
+TIME=`date +%H%M%S`
+
+IGNITE_HOME=/app/tibco/tib_install_base/tibsw/2019/ignite 
+source /app/tibco/tib_install_base/tibsw/2019/setEnv.sh
+echo "$DATE:$TIME + Starting Ignite"
+
+echo $JBOSS_HOME
+cd $IGNITE_HOME/bin
+nohup ./ignite.sh > $IGNITE_HOME/logs/ignite.log 2>&1 &

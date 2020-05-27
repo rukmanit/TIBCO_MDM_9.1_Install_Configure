@@ -1,0 +1,86 @@
+---
+# Create the Software install directory
+- name: Create Installer directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop: "{{ directory_list }}"
+
+# Get JAVA software
+- name: Get Java
+  get_url:
+    url: "{{ java_installer_url }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ java_unzip_dir }}"
+    mode: 0755
+
+# Install JAVA
+- name: Install java
+  unarchive:
+    src: "{{ java_unzip_dir }}{{ java_software }}"
+    dest: "{{ java_unzip_dir }}"
+    remote_src: yes 
+
+ # Create setenv.sh file
+- name: Create setEnv.sh
+  template:
+    src: setEnv.sh.j2
+    dest: "{{ install_mdm_dir }}/setEnv.sh"
+    mode: 0755
+
+# Download and Unarchive the Ignite 
+- name: Download Installer from artifactory
+  get_url:
+    url: "{{ artificatory_ignite_url }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ software_location }}"
+    mode: 0755
+
+- name: Unzip Ignite
+  unarchive:
+    src: "{{ software_location }}/ignite.zip"
+    dest: "{{ install_mdm_dir }}"
+    remote_src: yes
+
+#Create default-config.xml
+- name: Create default-config.xml
+  template:
+    src: default-config.xml.j2
+    backup: yes
+    dest: "{{ install_mdm_dir }}/ignite/default-config.xml"
+    mode: 0644
+
+# Copy Ignite start up script
+- name: Copy Ignite startup script
+  template:
+    src: Ignite_Start.ksh.j2
+    dest: "{{ install_mdm_dir }}/ignite/bin/Ignite_Start.ksh"
+    mode: 0755
+
+- name: Copy Ignite stop script
+  template:
+    src: Ignite_Stop.ksh.j2
+    dest: "{{ install_mdm_dir }}/ignite/bin/Ignite_Stop.ksh"
+    mode: 0755
+
+- name: Copy Ignite tail script
+  template:
+    src: Ignite_Tail.ksh.j2
+    dest: "{{ install_mdm_dir }}/ignite/bin/Ignite_Tail.ksh"
+    mode: 0755
+
+- name: Update permissions on ignite.sh
+  copy: 
+    src: "{{ install_mdm_dir }}/ignite/bin/ignite.sh"
+    dest: "{{ install_mdm_dir }}/ignite/bin/ignite.sh"
+    mode: 0755
+    remote_src: yes
+
+# Start Ignite on all servers
+- name: Start Ignite on all Cache Servers
+  shell: "sh Ignite_Start.ksh"
+  args:
+    chdir: "{{ install_mdm_dir }}/ignite/bin"

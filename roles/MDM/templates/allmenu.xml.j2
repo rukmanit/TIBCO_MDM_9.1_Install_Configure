@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navbar>
+	<menulist displayname="Inbox" basename="Inbox" class="security" id="inbox" url="Inbox?&amp;menulink=Inbox"/>
+	<menulist displayname="Administration" basename="Administration" class="security" id="adminmenu">
+		<menuitem class="security" id="adminmenu_company">
+			<displayname>Compnay Profiles</displayname>
+			<url>Company?menulink=Company Profiles</url>
+		</menuitem>
+		<menuitem class="security" id="adminmenu_enterprise">
+			<displayname>Enterprise Profiles</displayname>
+			<url>EnterpriseList?menulink=Enterprise Profiles</url>
+		</menuitem>
+		<menuitem class="security" id="adminmenu_member">
+			<displayname>User Accounts</displayname>
+			<url>MemberList?menulink=User Accounts</url>
+		</menuitem>
+		<menuitem class="security" id="adminmenu_roles">
+			<displayname>Roles</displayname>
+			<url>RoleList?menulink=Roles</url>
+		</menuitem>
+		<menuitem class="security" id="adminmenu_market">
+			<displayname>Integration Hub Profiles</displayname>
+			<url>MarketList?menulink=Marketplace Profiles</url>
+		</menuitem>
+		<menuitem class="security" id="adminmenu_buyers">
+			<displayname>Backend System Profiles</displayname>
+			<url>BuyerList?menulink=Trading Partner Profiles</url>
+		</menuitem>
+		<menuitem class="security" id="adminmenu_permissions">
+			<displayname>Resource Security</displayname>
+			<url>ResourceACL?menulink=Permissions</url>
+		</menuitem>
+	</menulist>
+	<!-- Remove sysop  for all but admin-->
+	<menulist displayname="System Operations" basename="System Operations" class="security" id="sysopmenu">
+		<menuitem class="security" id="importmenu">
+			<displayname>Import Metadata</displayname>
+			<url>CopyMetaData?&amp;action=import</url>
+		</menuitem>
+		<menuitem class="security" id="exportmenu">
+			<displayname>Export Metadata</displayname>
+			<url>ExportMetadata?&amp;action=list</url>
+		</menuitem>
+		<menuitem class="security" id="exportmenu2">
+			<displayname>Export Metadata (File)</displayname>
+			<url>CopyMetaData?&amp;action=export</url>
+		</menuitem>
+		<menuitem class="security" id="datatransfermenu">
+			<displayname>Data Transfer</displayname>
+			<url>DataTransfer?&amp;action=datatransfer</url>
+		</menuitem>
+	</menulist>
+	<menulist displayname="Master Data" basename="Catalog" class="security" id="catalogmenu">
+		<menuitem class="security" id="catalogmenu_data_source">
+			<displayname>Data Sources</displayname>
+			<url>DataFragmentList?menulink=Data Sources</url>
+		</menuitem>
+		<menuitem class="security" id="catalogmenu_master_catalog">
+			<displayname>Repositories</displayname>
+			<url>CatalogList?menulink=Master Catalogs</url>
+		</menuitem>
+		<menuitem class="security" id="catalogmenu_mass_update">
+			<displayname>Mass Update</displayname>
+			<url>GWTMassUpdate?action=LoadMassUpdate</url>
+		</menuitem>
+		<menuitem class="security" id="catalogmenu_relationship_management">
+			<displayname>Relationship Management</displayname>
+			<url>ACGraphicalView?menulink=Relationship Management</url>
+		</menuitem>
+		<menuitem class="security" id="catalogmenu_subset_rules">
+			<displayname>Subset Rules</displayname>
+			<url>SubCatalogList?menulink=Subset Rules</url>
+		</menuitem>
+		<menuitem class="security" id="catalogmenu_catalog_edition">
+			<displayname>Synchronization Profiles</displayname>
+			<url>CatalogEditionList?menulink=Buyer Catalogs</url>
+		</menuitem>
+		<menuitem class="security" id="catalogmenu_catalog_adapter">
+			<displayname>Synchronization Formats</displayname>
+			<url>CatalogTypeList?menulink=Catalog Formats</url>
+		</menuitem>
+		<!--
+menuitem class="security" id="catalogmenu_catalog_search">
+			<displayname>Search</displayname>
+			<basename>Product Search</basename>
+			<url>ProductSearch?menulink=Product Search</url>
+		</menuitem
+		-->
+	</menulist>
+	<menulist displayname="Browse and Search" basename="Browse" class="security" id="catalogmenu_catalog_search" url="BrowseProduct?menulink=Browse"/>
+	<menulist displayname="Business Processes" basename="Business Process" class="security" id="busprocmenu" url="ListRuleDomain?domainentry=businessprocess&amp;menulink=Business Processes"/>
+	<menulist displayname="Event Log" basename="Event Log" class="security" id="adminmenu_event_log" url="EventLog?action=listEventLog&amp;menulink=Event Log"/>
+	<menulist displayname="Query Tool" basename="Query Tool" class="security" id="queryopmenu">
+		<menuitem class="security" id="dbquery">
+			<displayname>Database Query</displayname>
+			<url>QueryTool?action=query</url>
+		</menuitem>
+		<menuitem class="security" id="logquery">
+			<displayname>CIM Logs</displayname>
+			<url>QueryTool?action=logs</url>
+	 		</menuitem>
+	</menulist>
+	<menulist basename="JQuery UI" class="security" displayname="Item Maintenance" id="catalogmenu_JQueryUI">
+		<menuitem class="security" id="ItemUI">
+			<displayname>Item</displayname>
+			<url>ItemUI</url>
+		</menuitem>
+		<menuitem class="security" id="ShippingUI">
+			<displayname>Shipping</displayname>
+			<url>ShippingUI</url>
+		</menuitem>
+		<menuitem class="security" id="PricingUI">
+			<displayname>Pricing</displayname>
+			<url>PricingUI</url>
+		</menuitem>
+		<menuitem class="security" id="DiscountUI">
+			<displayname>AssociateDiscount</displayname>
+			<url>AssociateDiscountUI</url>
+		</menuitem>
+	</menulist>
+	<!-- added for OMSD3 -->
+	<!--<menulist basename="My Inbox" class="security" displayname="My Inbox" id="catalogmenu_CustomInbox" url="CustomInbox"/>-->
+	<menulist basename="Ship Restrictions" class="security" displayname="Ship Restrictions" id="catalogmenu_ShipRestriction">
+		<menuitem class="security" id="submenu_RestrictionMaster">
+			<displayname>Destination Master</displayname>
+			<url>RestrictionMaster</url>
+		</menuitem>
+		<menuitem class="security" id="submenu_CriteriaRestriction">
+			<displayname>Criteria Master</displayname>
+			<url>CriteriaRestriction</url>
+		</menuitem>
+		<menuitem class="security" id="submenu_CriteriaMaster">
+			<displayname>Ship Restriction Master</displayname>
+			<url>CriteriaMaster</url>
+		</menuitem>
+	</menulist>
+	<menulist basename="Mass Upload" class="security" displayname="Mass Upload" id="catalogmenu_MassUpload">
+		<menuitem class="security" id="MassUploadUI">
+			<displayname>MassUpload</displayname>
+			<url>MassUploadHistory?linkType=massUpload</url>
+		</menuitem>
+		<menuitem class="security" id="submenu_History">
+			<displayname>History</displayname>
+			<url>MassUploadHistory</url>
+		</menuitem>
+		<menuitem class="security" id="DSIndicator">
+			<displayname>DS Indicator</displayname>
+			<url>Download?downloaddoc=mutemplates/DS Indicators.xltx</url>
+		</menuitem>
+		<!--<menuitem class="security" id="BoLeadTime">-->
+			<!--<displayname>BO Lead Time</displayname>-->
+			<!--<url>Download?downloaddoc=mutemplates/BO Lead Time.xltx</url>-->
+		<!--</menuitem>-->
+		<menuitem class="security" id="EmpDisc">
+			<displayname>Employee Discount</displayname>
+			<url>Download?downloaddoc=mutemplates/Employee Discount.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="NlaInd">
+			<displayname>NLA Indicator</displayname>
+			<url>Download?downloaddoc=mutemplates/NLA Indicator.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="SellInd">
+			<displayname>SELL Indicator</displayname>
+			<url>Download?downloaddoc=mutemplates/Sell Indicator.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="Pricing">
+			<displayname>Pricing Charges</displayname>
+			<url>Download?downloaddoc=mutemplates/Pricing.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="AddCharges">
+			<displayname>Additional Pricing</displayname>
+			<url>Download?downloaddoc=mutemplates/Additional Pricing.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="SKULinking">
+			<displayname>SKU Linking</displayname>
+			<url>Download?downloaddoc=mutemplates/Dummy Item Linking.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="CLRReset">
+			<displayname>CLR Reset</displayname>
+			<url>Download?downloaddoc=mutemplates/Clearance Reset.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="PZMono">
+			<displayname>PZMono</displayname>
+			<url>Download?downloaddoc=mutemplates/Pz Mono.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="LaborSKULinking">
+			<displayname>Labor SKU Linking</displayname>
+			<url>Download?downloaddoc=mutemplates/Labor SKU Linking.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="BOPIS">
+			<displayname>SKU Eligibility for Pickup in store</displayname>
+			<url>Download?downloaddoc=mutemplates/SKU Eligibility for Pickup in store.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="BOSTS">
+			<displayname>SKU Eligibility for Ship to store</displayname>
+			<url>Download?downloaddoc=mutemplates/SKU Eligibility for Ship to store.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="BOSFS">
+			<displayname>SKU Eligibility for Ship from store</displayname>
+			<url>Download?downloaddoc=mutemplates/SKU Eligibility for Ship from store.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="STORES">
+			<displayname>STORE Eligibility for Pickup in store</displayname>
+			<url>Download?downloaddoc=mutemplates/STORE Eligibility for Pickup in store.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="MTOIndicator">
+			<displayname>MTO Indicator</displayname>
+			<url>Download?downloaddoc=mutemplates/MTO Indicator.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="MAPIndicator">
+			<displayname>MAP Indicator</displayname>
+			<url>Download?downloaddoc=mutemplates/Minimum Advertised Price.xltx</url>
+		</menuitem>
+		<menuitem class="security" id="EFPIndicator">
+			<displayname>EFP Indicator</displayname>
+			<url>Download?downloaddoc=mutemplates/Exclude From Promo.xltx</url>
+		</menuitem>
+	</menulist>
+	<!-- added for OMSD3 -->
+	<!--<menulist basename="Colors and Styles" class="security" displayname="Colors and Styles" id="catalogmenu_colors_styles"> -->
+		<!--<menuitem class="security" id="submenu_Colors"> -->
+			<!--<displayname>Colors and Styles</displayname> -->
+			<!--<url>Colors</url> -->
+		<!--</menuitem> -->
+	<!--</menulist> -->
+	<menulist basename="Stores" class="security" displayname="Stores" id="catalogmenu_stores">
+		<menuitem class="security" id="submenu_Stores">
+			<displayname>Store Attributes</displayname>
+			<url>Stores</url>
+		</menuitem>
+	</menulist>
+</navbar>
+

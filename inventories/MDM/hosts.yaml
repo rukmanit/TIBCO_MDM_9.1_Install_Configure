@@ -1,0 +1,57 @@
+---
+
+all:
+  children:
+    MDM_DEV:
+      vars:
+        ansible_user: tibdev0
+        ansible_port: 22
+      children:
+        dev_mdm_servers:
+          hosts:
+            hostname:
+              ansible_host: 0.0.0.47
+
+    dev_jboss:
+      children:
+        dev_mdm_servers:
+
+    dev_apache:
+      children:
+        dev_mdm_servers:
+
+    MDM_QA1:
+      vars:
+        ansible_user: tibstst0
+        ansible_port: 22
+      children:
+        qa1_mdm_servers:
+          hosts:
+            hostname1:
+              ansible_host: 0.0.0.49
+
+    qa1_jboss:
+      children:
+        qa1_mdm_servers:
+
+    qa1_apache:
+      children:
+        qa1_mdm_servers:
+
+    MDM_QA2:
+      vars:
+        ansible_user: tibstst0
+        ansible_port: 22
+      children:
+        qa2_mdm_servers:
+          hosts:
+            hostname2:
+              ansible_host: 0.0.0.50
+
+    qa2_jboss:
+      children:
+        qa2_mdm_servers:
+
+    qa2_apache:
+      children:
+        qa2_mdm_servers:

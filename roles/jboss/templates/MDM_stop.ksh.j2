@@ -1,0 +1,9 @@
+#!/bin/ksh
+DATE=`date +%m%d%y`
+TIME=`date +%H%M%S`
+
+
+source {{ install_wildfly_dir }}/setEnv.sh
+#IP=`ifconfig | grep -A 1 'eno16777984'|tail -1 |awk '{$1=$1};1'|cut -d ' ' -f 2`
+echo "$DATE:$TIME + Shutting down MDM"
+./jboss-cli.sh --connect controller={{ ansible_hostname }}:9990 command=:shutdown

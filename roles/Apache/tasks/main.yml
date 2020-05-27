@@ -1,0 +1,35 @@
+---
+- name: Install Apache 
+  yum:
+    pkg: httpd
+    state: latest
+  become: true
+- name: Enable Apache on system reboot
+  service: 
+    name: httpd 
+    enabled: yes
+  become: true
+- name: Create httpd.conf
+  template:
+    src: httpd.conf.j2
+    backup: yes
+    dest: "/etc/httpd/conf/httpd.conf"
+  become: true 
+- name: create extra folder
+  file:
+    path: /etc/httpd/conf/extra/
+    state: directory
+    mode: 0644
+  become: true
+- name: Create httpd-proxy.conf` 
+  template:
+    src: httpd-proxy.conf.j2
+    backup: yes
+    dest: "/etc/httpd/conf/extra/httpd-proxy-{{ env }}.conf"
+  become: true
+
+- name : Start service httpd, if not started
+  service:
+    name: httpd
+    state: started
+  become: true

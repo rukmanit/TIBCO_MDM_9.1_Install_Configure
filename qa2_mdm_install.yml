@@ -1,0 +1,8 @@
+---
+- name: Install the MDM QA2 servers
+  hosts: MDM_QA2
+
+  tasks:
+  - include_role:
+      name: MDM
+#    vars:

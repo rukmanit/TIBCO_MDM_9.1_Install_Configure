@@ -1,0 +1,18 @@
+---:
+mdm_apache_port: 18280
+mdm_port: 8080
+item_service_port: 12100 
+item_price_service_port: 12400
+svc_service_port: 12500
+assco_disc_port: 12000
+work_item_port: 
+massupload_port: 12200 
+ship_restrict_criteria_port: 12700
+ship_restrict_dest_port: 12800 
+ship_restrict_port: 12600
+price_approval_port: 
+notification_port: 12300
+color_style_port:
+store_service_port: 12900
+env: qa1
+bw_server: 

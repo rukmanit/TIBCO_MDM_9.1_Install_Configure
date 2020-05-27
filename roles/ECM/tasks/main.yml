@@ -1,0 +1,52 @@
+---
+# Create the Software install directory
+- name: Create ECM.ear directory
+  
+
+- name: Jboss Start
+  shell: "sh MDM_stop.ksh"
+  args:
+    chdir: "{{ install_root_dir }}/wildfly-10.1.0.Final/bin"
+  environment:
+    JAVA_HOME: "{{ java_unzip_dir }}jdk1.8.0_121"
+    PATH: "$ANT_HOME/bin:$JAVA_HOME/bin:$ORACLE_HOME/bin:{{ ansible_env.PATH }}"
+    MQ_HOME: "{{ install_root_dir }}/mdm/9.1"
+    MQ_COMMON_DIR: "$MQ_HOME/common"
+    MQ_LOG: $MQ_HOME/log
+    MQ_CONFIG_FILE: $MQ_HOME/config/ConfigValues.xml
+    NODE_ID: Member1
+    AS_HOME: $MQ_HOME/bin/as/2.1
+    JBOSS_HOME: "{{ install_root_dir }}/wildfly-10.1.0.Final/"
+    ANT_HOME: $MQ_HOME/bin/buildTool
+    ORACLE_HOME: /apps/oracle/client
+    LD_LIBRARY_PATH: $AS_HOME/lib:$LD_LIBRARY_PATH
+    CLASSPATH: $JAVA_HOME/lib:$AS_HOME/lib
+    NLS_LANG: AMERICAN_AMERICA.UTF8
+
+- name: Deploy ECM.ear
+  get_url:
+    url: "{{ ecm_ear_artifactory_url }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ ecm_ear_location }}"
+    mode: 0755
+
+- name: Jboss Start
+  shell: "sh MDM_start.ksh"
+  args:
+    chdir: "{{ install_root_dir }}/wildfly-10.1.0.Final/bin"
+  environment:
+    JAVA_HOME: "{{ java_unzip_dir }}jdk1.8.0_121"
+    PATH: "$ANT_HOME/bin:$JAVA_HOME/bin:$ORACLE_HOME/bin:{{ ansible_env.PATH }}"
+    MQ_HOME: "{{ install_root_dir }}/mdm/9.1"
+    MQ_COMMON_DIR: "$MQ_HOME/common"
+    MQ_LOG: $MQ_HOME/log
+    MQ_CONFIG_FILE: $MQ_HOME/config/ConfigValues.xml
+    NODE_ID: Member1
+    AS_HOME: $MQ_HOME/bin/as/2.1
+    JBOSS_HOME: "{{ install_root_dir }}/wildfly-10.1.0.Final/"
+    ANT_HOME: $MQ_HOME/bin/buildTool
+    ORACLE_HOME: /apps/oracle/client
+    LD_LIBRARY_PATH: $AS_HOME/lib:$LD_LIBRARY_PATH
+    CLASSPATH: $JAVA_HOME/lib:$AS_HOME/lib
+    NLS_LANG: AMERICAN_AMERICA.UTF8

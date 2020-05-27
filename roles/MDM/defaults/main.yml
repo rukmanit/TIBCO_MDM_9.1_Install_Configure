@@ -1,0 +1,46 @@
+---
+artifactory_username: 
+artifactory_password:
+artificatory_url:  /MDM_ARCHIVE/MDM_SOFTWARE/  
+directory_list:
+  - "{{ mdm_unzip_dir }}"
+  - "{{ lgpl_unzip_dir }}"
+  - "{{ install_root_dir }}"
+software_download_dict:
+  "{{ mdm_installer_url }}": "{{ mdm_unzip_dir }}"
+  "{{ lgpl_installer_url }}": "{{ lgpl_unzip_dir }}"
+  "{{ xmlc_installer_url }}": "{{ lgpl_unzip_dir }}"
+software_unarchive_dict:
+  "{{ mdm_unzip_dir }}/{{ mdm_software_archive }}": "{{ mdm_unzip_dir }}"     
+environment_name: NONPRD
+install_root_dir: "{{ mdm_root_dir }}/tibco/tib_install_base/tibsw/2019"
+mdm_root_dir: /mnt/vol1 # default value for Cluster installation. /app for QA env.
+lgpl_installer_url: "{{ artificatory_url }}{{ lgpl_software_archive }}"
+lgpl_software_archive: product_tibco_hibernate_lgpl_3.6.10.003.zip
+lgpl_unzip_dir: "{{ software_location }}/lgpl"
+mdm_installer_path: "{{ mdm_unzip_dir }}/{{ tibco_installer_name }}"  
+mdm_installer_url:  "{{ artificatory_url }}{{ mdm_software_archive }}"
+mdm_library_source_dir: "{{ xmlc_unzip_dir }}"
+mdm_patterns_server_port: 5051 
+mdm_patterns_ui_port: 9080
+mdm_software_archive: TIB_mdm-JBOSS_9.1.0_linux_x86_64.zip
+mdm_source_install_dir:
+mdm_start_port: 6080
+mdm_stop_port: 6009
+mdm_unzip_dir: "{{ software_location }}/MDM" 
+software_location: /app/tibco/software
+tibco_installer_name: TIBCOUniversalInstaller-lnx-x86-64.bin
+xmlc_installer_url: "{{ artificatory_url }}{{ xmlc_software_archive }}"
+xmlc_software_archive: product_tibco_xmlc_2.2.16.001.zip
+xmlc_unzip_dir: "{{ software_location }}/lgpl/"
+host_port: 8080
+mdm_theme_file_dict:
+  images/header_logo.jpg: "{{ install_root_dir }}/mdm/9.1/common/htmlprops/images/"
+  images/header_logo.png: "{{ install_root_dir }}/mdm/9.1/common/htmlprops/images/"
+  images/back_login.jpg: "{{ install_root_dir }}/mdm/9.1/common/htmlprops/images/"
+  images/back_login.png: "{{ install_root_dir }}/mdm/9.1/common/htmlprops/images/"
+  images/TIBCO_Logo.png: "{{ install_root_dir }}/mdm/9.1/common/htmlprops/images/"
+  css/custom.css: "{{ install_root_dir }}/mdm/9.1/common/htmlprops/css/"
+  
+ems_bin_location: <EMS_HOME>/ems/8.3/bin
+ems_bin_file: tibemsadmin64

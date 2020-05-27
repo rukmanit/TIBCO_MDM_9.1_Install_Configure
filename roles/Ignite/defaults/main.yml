@@ -1,0 +1,25 @@
+---
+artifactory_username: admin
+artifactory_password: password
+artificatory_url:  
+artificatory_ignite_url:  ignite.zip  
+directory_list:
+  - "{{ install_mdm_dir }}"
+  - "{{ software_location }}"
+  - "{{ ignite_log_dir }}"
+software_download_dict:
+  "{{ ignite_installer_url }}": "{{ software_location }}"
+software_unarchive_dict:
+  "{{ software_location }}/{{ ignite_software_archive }}": "{{ ignite_unzip_dir }}"
+environment_name: NONPRD
+install_root_dir: "{{ mdm_root_dir }}/tibco/tib_install_base/tibsw/2019"
+mdm_root_dir: /mnt/vol1 # default value for Cluster installation. /app for QA env.
+install_mdm_dir: "/app/tibco/tib_install_base/tibsw/2019"
+ignite_log_dir: "/app/tibco/tib_install_base/tibsw/2019/ignite/logs"
+mdm_start_port: 6080
+mdm_stop_port: 6009
+host_port: 8080
+java_software: jdk1.8.0_121.tar 
+java_installer_url: "{{ artificatory_url }}{{ java_software }}" 
+java_unzip_dir: "/app/"
+software_location: /app/tibco/software

@@ -1,0 +1,100 @@
+#
+# Implements a proxy/gateway for Apache.
+# # Required modules: mod_proxy, mod_proxy_http
+#
+
+<IfModule proxy_module>
+<IfModule proxy_http_module>
+
+#
+# Reverse Proxy
+#
+ProxyRequests On
+
+<Proxy *>
+        Order deny,allow
+        Allow from all
+</Proxy>
+
+########## WS Item Services
+ProxyPass /ItemServices http://{{ bw_server }}:{{ item_service_port }}/ItemServices
+ProxyPassReverse /ItemServices http://{{ bw_server }}:{{ item_service_port }}/ItemServices
+
+########## WS DummySku Linking Services
+ProxyPass /dummySkuLinking http://{{ bw_server }}:{{ skulinking_service_port }}/dummySkuLinking
+ProxyPassReverse /dummySkuLinking http://{{ bw_server }}:{{ skulinking_service_port }}/dummySkuLinking
+
+########## WS Item Pricing Services
+ProxyPass /ItemPricingServices http://{{ bw_server }}:{{ item_price_service_port }}/ItemPricingServices
+ProxyPassReverse /ItemPricingServices http://{{ bw_server }}:{{ item_price_service_port }}/ItemPricingServices
+
+########## WS Ship VAS Charges
+ProxyPass /SVCServices http://{{ bw_server }}:{{ svc_service_port }}/SVCServices
+ProxyPassReverse /SVCServices http://{{ bw_server }}:{{ svc_service_port }}/SVCServices
+
+########## Associate Discount
+ProxyPass /AssociateDiscount http://{{ bw_server }}:{{ assco_disc_port }}/AssociateDiscount
+ProxyPassReverse /AssociateDiscount http://{{ bw_server }}:{{ assco_disc_port }}/AssociateDiscount
+
+########## Get entitlement services for user
+ProxyPass /fetchUserRolesServices http://localhost:9080/eml/services/AdminService/getEntitlementAction
+ProxyPassReverse /fetchUserRolesServices http://localhost:9080/eml/services/AdminService/getEntitlementAction
+
+########## ReferenceCode
+ProxyPass /ReferenceCodeServices http://localhost:9080/eml/services/router
+ProxyPassReverse /ReferenceCodeServices http://localhost:9080/eml/services/router
+
+########## Work Item -
+ProxyPass /WorkItemServices http://{{ bw_server }}:12080/WorkItemServices
+ProxyPassReverse /WorkItemServices http://{{ bw_server }}:12080/WorkItemServices
+
+########## Mass Upload History -
+ProxyPass /MassUploadHistoryServices http://{{ bw_server }}:{{ massupload_port }}/MassUploadHistoryServices
+ProxyPassReverse /MassUploadHistoryServices http://{{ bw_server }}:{{ massupload_port }}/MassUploadHistoryServices
+
+########### Ship Restriction - Destination
+ProxyPass /ShipRestrictionDestinationServices http://{{ bw_server }}:{{ ship_restrict_dest_port }}/ShipRestrictionDestinationServices
+ProxyPassReverse /ShipRestrictionDestinationServices http://{{ bw_server }}:{{ ship_restrict_dest_port }}/ShipRestrictionDestinationServices
+
+########### Ship Restriction - Criteria
+ProxyPass /ShipRestrictionCriteriaServices http://{{ bw_server }}:{{ ship_restrict_criteria_port }}/ShipRestrictionCriteriaServices
+ProxyPassReverse /ShipRestrictionCriteriaServices http://{{ bw_server }}:{{ ship_restrict_criteria_port }}/ShipRestrictionCriteriaServices
+
+########### Ship Restriction - Ship Restriction Set UP
+ProxyPass /ShipRestrictionServices http://{{ bw_server }}:{{ ship_restrict_port }}/ShipRestrictionServices
+ProxyPassReverse /ShipRestrictionServices http://{{ bw_server }}:{{ ship_restrict_port }}/ShipRestrictionServices
+
+########### PricingApprovalService- PricingApprovalService
+ProxyPass /PricingApprovalService http://{{ bw_server }}:{{ price_approval_port }}/PricingApprovalService
+ProxyPassReverse /PricingApprovalService http://{{ bw_server }}:{{ price_approval_port }}/PricingApprovalService
+
+########## NotificationService - NotificationService
+ProxyPass /NotificationService http://{{ bw_server }}:{{ notification_port }}/NotificationService
+ProxyPassReverse /NotificationService http://{{ bw_server }}:{{ notification_port }}/NotificationService
+
+########## Colors / Styles Services
+ProxyPass /eml/WSUI/Colors/colors_styles http://{{ bw_server }}:19110/colors_styles
+ProxyPassReverse /eml/WSUI/Colors/colors_styles http://{{ bw_server }}:19110/colors_styles
+
+
+########## Stores Services
+#ProxyPass /Stores/store http://{{ bw_server }}:{{ store_service_port }}/store
+#ProxyPassReverse /Stores/store http://{{ bw_server }}:{{ store_service_port }}/store
+ ProxyPass /Stores/store http://{{ bw_server }}:{{ store_service_port }}/store
+ ProxyPass /Stores/storeDetails http://{{ bw_server }}:{{ store_service_port }}/storeDetails
+ ProxyPassReverse /Stores/store http://{{ bw_server }}:{{ store_service_port }}/store
+ ProxyPassReverse /Stores/storeDetails http://{{ bw_server }}:{{ store_service_port }}/storeDetails
+
+	########## MDM and Proxy Settings
+	<LocationMatch "/eml">
+	        ProxyPass http://{{ ansible_hostname }}:{{ mdm_port }}/eml
+	        ProxyPassReverse http://{{ ansible_hostname }}:{{ mdm_port }}/eml
+			ProxyPreserveHost On
+	#### added for CustomUI ####
+	        SetEnvIf ^Cookie$ "(.+)" PrimaCookie=$1
+	        Header add PrimaSessionId %{PrimaCookie}e
+	        RequestHeader set PrimaSessionId %{PrimaCookie}e
+	</LocationMatch>
+
+</IfModule>
+</IfModule>

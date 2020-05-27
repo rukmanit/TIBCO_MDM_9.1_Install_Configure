@@ -1,0 +1,51 @@
+<?xml  version="1.0"?>
+    <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+     <properties>
+<comment>---Universal Installer Silent Installation Properties---</comment>
+
+<!--accept the license agreement-->
+<entry key="acceptLicense">true</entry>
+
+<!--the root installation directory-->
+<!--if the product does not support multiple instances and TIBCO_HOME has already been set then-->
+<!--this value is ignored and the existing TIBCO_HOME is used as the installation root-->
+<entry key="installationRoot">{{ install_root_dir }}</entry>
+
+<!--If multiple environments are supported, create a new one or use and existing one-->
+<!--If the product does not support multiple environments, then the values below are ignored-->
+
+<!--If using an existing environment then the installationRoot AND environmentName MUST match a pre-existing environment-->
+<!--If createing a new environment then the installationRoot AND environmentName MUST BE UNIQUE and not match a pre-existing environment-->
+<entry key="environmentName">{{ environment_name }}</entry>
+<entry key="environmentDesc">MDM Installation</entry>
+
+<!--Product Specific Properties can be set below using the same 'entry key=' format as above-->
+<entry key="feature_Executable Image_cim-jboss">true</entry>
+<entry key="feature_Common Configuration_cim-jboss">true</entry>
+
+<!--Common Config settings-->
+<!--if commonConfig_useDefault is true then the common config directory will be-->
+<!--based on the installationRoot setting above and the commonConfig_directory setting-->
+<!--will be ignored. If commonConfig_useDefault is set to false then you must provide-->
+<!--a valid directory location for the commonConfig_directory setting.-->
+<entry key="commonConfig_useDefault">true</entry>
+<entry key="commonConfig_directory">{{ install_root_dir }}/CIMcommon</entry>
+<entry key="tibco.cim.common.dir">{{ install_root_dir }}/CIMcommon</entry>
+
+<!--CIM XMLC library download Settings-->
+<entry key="LGPLAssemblyLicenseAccepted">true</entry>
+<entry key="LGPLAssemblyDownload">false</entry>
+<entry key="LGPLAssemblyPath">{{ mdm_library_source_dir }}</entry>
+
+<!--CIM Configurator Settings-->
+<entry key="mdm.server.stop.port">{{ mdm_stop_port }}</entry>
+<entry key="mdm.server.http.port">{{ mdm_start_port }}</entry>
+<entry key="mdm.launch.config">false</entry>
+
+<!--Patterns Settings-->
+<entry key="patterns.ui.port">{{ mdm_patterns_ui_port }}</entry>
+<entry key="patterns.server.port">{{ mdm_patterns_server_port }}</entry>
+<entry key="patterns.windows.service">false</entry>
+
+</properties>
+        

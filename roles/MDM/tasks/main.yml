@@ -1,0 +1,119 @@
+---
+# Create the Software install directory
+- name: Create Installer directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop: "{{ directory_list }}"
+
+# Download and Unarchive the MDM Installable 
+- name: Download Installer from artifactory
+  get_url:
+    url: "{{ item.key }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ item.value }}"
+    mode: 0755
+  loop: "{{ software_download_dict|dict2items }}"
+
+- name: Unzip MDM Installer
+  unarchive:
+    src: "{{ item.key }}"
+    dest: "{{ item.value }}"
+    remote_src: yes
+  loop: "{{ software_unarchive_dict|dict2items }}"  
+    
+# Create the silent file
+- name: Create the MDM Silent file
+  template:
+    src: silentfile.xml.j2
+    dest: "{{ mdm_unzip_dir }}/silentfile.xml"
+    mode: 0644
+
+# Execute the installer
+- name: Install MDM Software
+  shell: "{{ mdm_installer_path }} -silent -V responseFile=silentfile.xml"
+  args:
+    chdir: "{{ mdm_unzip_dir }}"
+# Create ConfigValue.xml
+- name: Create ConfigValue.xml
+  template:
+    src: "{{ ConfigValues_XML }}" # ConfigValues_PERF.xml.j2 default for PERF, ConfigValues.xml.j2 for QA envs.
+    backup: yes
+    dest: "{{ install_root_dir }}/mdm/9.1/config/ConfigValues.xml"
+    mode: 0644 
+
+#Create allmenu.xml
+- name: Create allmenu.xml
+  template:
+    src: allmenu.xml.j2
+    backup: yes
+    dest: "{{ install_root_dir }}/mdm/9.1/config/security/allmenu.xml"
+    mode: 0644 
+
+#Pull GIT repo files for customization
+- name: Clone MDM GIT REPO 
+  git: 
+    repo: 
+    dest: "{{ software_location }}/repo"
+    version: master
+    accept_hostkey: yes
+    key_file: /home/tibbld0/.ssh/id_svcagitje_rsa
+  delegate_to: localhost 
+
+#Create htmlprop folder 
+
+- name: Create htmlprop folder 
+  file:
+    path: "{{ install_root_dir }}/mdm/9.1/common/htmlprops"
+    state: directory
+    mode: 0755	
+
+# Copy the theme files from GIT Repo to MDM Directory
+- name: Copy Images and CSS for MDM Server
+  copy:
+    src: "{{ software_location }}/repo/MDM/common/htmlprops/{{ item.key }}"
+    dest: "{{ item.value }}"
+    backup: yes
+  loop: "{{ mdm_theme_file_dict|dict2items }}"
+
+- name: Copy Resources folder for MDM server
+  copy:
+    src: "{{software_location }}/repo/MDM/resources"
+    dest: "{{ install_root_dir }}/mdm/9.1/"
+    directory_mode: 0755
+    mode: 0755
+
+- name: Download createqueues.txt from artifactory
+  get_url:
+    url: "{{ artificatory_url }}/creatqueues.txt"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ software_location }}"
+    mode: 0755
+  delegate_to: localhost
+
+- name: Create EMS queues 
+  shell: "./{{ ems_bin_file }} -server tcp://{{ EMS_SERVER1 }}:{{ EMS_PORT1 }} -user {{ EMS_USER }} -password {{ EMS_PASSWORD }} -script {{ software_location }}/creatqueues.txt -ignore" 
+  args:
+    chdir: "{{ ems_bin_location }}"
+  delegate_to: localhost
+
+
+- name: Downloading the WS file from git
+  git:
+    repo: 
+    dest: "{{ software_location }}/mdm"
+    version: master
+    key_file: /home/tibbld0/.ssh/id_svcagitje_rsa
+  delegate_to: localhost 
+
+- name: Copying the WS files to actual server 
+  copy:
+    src: "{{ software_location }}/mdm/WS"
+    dest: "{{ install_root_dir }}/mdm/9.1/common/"
+    backup: yes
+    directory_mode: 0755
+    mode: 0755
+     

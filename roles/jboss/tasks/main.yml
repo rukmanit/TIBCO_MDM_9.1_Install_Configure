@@ -1,0 +1,133 @@
+---
+# Create the Software install directory
+- name: Create Installer directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop: "{{ directory_list }}"
+
+# Download and Unarchive the MDM Installable
+- name: Download Installer from artifactory
+  get_url:
+    url: "{{ item.key }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ item.value }}"
+    mode: 0755
+  loop: "{{ software_download_dict|dict2items }}"
+
+- name: Unzip JBOSS Installer
+  unarchive:
+    src: "{{ item.key }}"
+    dest: "{{ item.value }}"
+    remote_src: yes
+  loop: "{{ software_unarchive_dict|dict2items }}"
+
+- name: Create Standalone.conf
+  template:
+    src: standalone.conf.j2
+    backup: yes
+    dest: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/bin/standalone.conf"
+
+- name: Create Standalone.xml
+  template:
+    src: standalone.xml.j2
+    backup: yes
+    dest: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/standalone/configuration/standalone.xml"
+
+- name: Copying the Jboss filesystem from GIT 
+  copy:
+    src: "{{ item.key }}"
+    dest: "{{ item.value }}"
+    backup: yes
+  loop: "{{jboss_filesystem_git_replacement_dict|dict2items }}"
+
+- name: Get Java
+  get_url:
+    url: "{{ java_installer_url }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ java_unzip_dir }}"
+    mode: 0755
+
+- name: Install java
+  unarchive:
+    src: "{{ java_unzip_dir }}{{ java_software }}"
+    dest: "{{ java_unzip_dir }}"
+    remote_src: yes 
+
+- name: Create setEnv.sh
+  template:
+    src: setEnv.sh.j2
+    dest: "{{ install_wildfly_dir }}/setEnv.sh"
+    mode: 0755
+
+
+- name: Get TIBCO module 
+  get_url:
+    url: "{{ tibco_module_url }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ tibco_module_unzip  }}"
+    mode: 0755
+
+- name: Install module 
+  unarchive:
+    src: "{{ tibco_module_unzip }}/{{ tibco_archive }}"
+    dest: "{{ tibco_module_unzip }}"
+    remote_src: yes
+
+
+- name: Deploy ECM.ear
+  get_url:
+    url: "{{ ecm_ear_artifactory_url }}"
+    url_username: "{{ artifactory_username }}"
+    url_password: "{{ artifactory_password }}"
+    dest: "{{ ecm_ear_location }}"
+    mode: 0755
+
+
+- name: Create MDM start script
+  template: 
+    src: MDM_start.ksh.j2
+    dest: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/bin/MDM_start.ksh"
+    mode: 0755
+
+- name: Create MDM stop script
+  template:
+    src: MDM_stop.ksh.j2
+    dest: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/bin/MDM_stop.ksh"
+    mode: 0755
+
+- name: Create MDM tail script
+  template:
+    src: MDM_tail.ksh.j2
+    dest: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/bin/MDM_tail.ksh"
+    mode: 0755
+
+- name: Create standalone logs directory 
+  file:
+    path: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/standalone/log"
+    state: directory
+    mode: 0755 
+
+
+- name: Jboss Start
+  shell: "sh MDM_start.ksh"
+  args:
+    chdir: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/bin"
+  environment:
+    JAVA_HOME: "{{ java_unzip_dir }}jdk1.8.0_121"
+    PATH: "$ANT_HOME/bin:$JAVA_HOME/bin:$ORACLE_HOME/bin:{{ ansible_env.PATH }}"
+    MQ_HOME: "{{ install_mdm_dir }}/mdm/9.1"
+    MQ_COMMON_DIR: "$MQ_HOME/common"
+    MQ_LOG: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/standalone/log"
+    MQ_CONFIG_FILE: $MQ_HOME/config/ConfigValues.xml
+    NODE_ID: Member1
+    JBOSS_HOME: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/"
+    ANT_HOME: $MQ_HOME/bin/buildTool
+    ORACLE_HOME: /app/oracle/client
+    LD_LIBRARY_PATH: $LD_LIBRARY_PATH
+    CLASSPATH: $JAVA_HOME/lib
+    NLS_LANG: AMERICAN_AMERICA.UTF8

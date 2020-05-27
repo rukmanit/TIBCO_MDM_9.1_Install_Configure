@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+        Alter configuration below as needed.
+    -->
+    <bean id="base-ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration" abstract="true">
+		<property name="peerClassLoadingEnabled" value="false"/>
+		
+		<!-- Enable client mode. -->
+		<!--<property name="clientMode" value="true"/>-->
+		
+		<!-- Uncomment metricsLogFrequency to disable metrics log. Default value is 60000 which is every minute -->
+		<!--property name="metricsLogFrequency" value="0"/-->		
+	</bean>
+	
+	<bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration" parent="base-ignite.cfg">
+        <property name="gridName" value="MDMNODE"/>
+		<!--<property name="localHost" value="127.0.0.1"/>-->
+		
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+			
+				<!-- Statistics print frequency in milliseconds.0 indicates that no print. Greater than 0 and log is not quiet then stats are printed out with INFO level once a period. This may be helpful for tracing topology problems. -->
+				<!--property name="statisticsPrintFrequency" value="30000"/-->
+				
+				<!-- Initial local port to listen to. -->
+				<property name="localPort" value="48500"/>
+				
+				<!-- Changing local port range. -->
+				<property name="localPortRange" value="20"/>
+				
+				<!-- Delay in milliseconds between heartbeat issuing of heartbeat messages. Default 2000 milliseconds -->
+				<!--property name="heartbeatFrequency" value="2000"/-->
+				
+				<!-- Number of heartbeat requests that could be missed before local node initiates status check. Default 1 -->
+				<!--property name="maxMissedHeartbeats" value="1"/-->
+				
+				<!-- Number of times node tries to (re)establish connection to another node. Default 2 -->
+				<!--property name="reconnectCount" value="2"/-->
+				
+				<!-- Sets maximum network timeout in milliseconds to use for network operations. Default 5000 milliseconds -->
+				<!--property name="networkTimeout" value="5000"/-->
+				
+				<!-- Sets socket operations timeout. This timeout is used to limit connection time and write-to-socket time. Default 2000 milliseconds -->
+				<!--property name="socketTimeout" value="5000"/-->
+				
+				<!-- Sets timeout for receiving acknowledgement for sent message.If acknowledgement is not received within this timeout, sending is considered as failed and SPI tries to repeat message sending. Default 2000 milliseconds -->
+				<!--property name="ackTimeout" value="5000"/-->
+			
+				<property name="ipFinder">
+                   
+                   <!-- Uncomment static IP finder to enable static-based discovery of initial nodes. -->
+                   <!--<bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">-->
+                  <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                         <property name="addresses">
+                           <list>
+                             <!-- 
+                             Explicitly specifying address of a local node to let it start and
+                             operate normally even if there is no more nodes in the cluster. 
+                             You can also optionally specify an individual port or port range.
+                             -->
+                           
+                             <!-- 
+                             IP Address and optional port range of a remote node.
+                             You can also optionally specify an individual port.
+                             -->
+								    <value>10.7.2.133:48500..48520</value>
+                                    <value>10.7.2.134:48500..48520</value>
+                                    <value>10.7.2.135:48500..48520</value>
+                                    <value>10.7.2.136:48500..48520</value>
+                                    <value>10.7.2.137:48500..48520</value>
+                                    <value>10.7.2.138:48500..48520</value>
+                                    <value>10.7.2.139:48500..48520</value>
+                                    <value>10.7.2.140:48500..48520</value>
+		                           </list>
+                       </property>
+                   </bean>
+               </property>
+	
+		<!--
+        Explicitly configure TCP communication SPI changing local
+        port number for the nodes from the cluster.
+		-->
+		<!--
+		<property name="communicationSpi">
+			<bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
+				<property name="localPort" value="48100"/>
+				<property name="messageQueueLimit" value="1024"/>
+			</bean>
+		</property>
+		-->
+	 </bean>
+    </property>
+    </bean>
+</beans>

@@ -1,0 +1,8 @@
+---
+- name: Install the MDM Dev servers
+  hosts: MDM_QA2
+
+  tasks:
+  - include_role:
+      name: Apache  
+#    vars:

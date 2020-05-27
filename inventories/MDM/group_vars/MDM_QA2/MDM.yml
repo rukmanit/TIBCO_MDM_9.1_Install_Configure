@@ -1,0 +1,17 @@
+EMS_USER: admin
+EMS_SERVER1: 
+EMS_PORT1: 60000
+EMS_PASSWORD: 
+JDBC_USER: 
+JDBC_USERNAME: 
+JDBC_SID: 
+JDBC_SERVER: 
+JDBC_PORT: 1521
+JDBC_PASSWORD: 
+oracle_client_location: /apps/oracle/client
+min_pool_size: 50
+max_pool_size: 500
+mdm_root_dir: /app
+ConfigValues_XML: ConfigValues.xml.j2
+oracle_dir: /apps
+JDBC_CONNECTION:  

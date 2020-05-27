@@ -1,0 +1,32 @@
+artifactory_username: <username>
+artifactory_password: <password>
+artificatory_url: <artifactoryurl> /MDM_ARCHIVE/MDM_SOFTWARE/
+
+directory_list:
+  - "{{ jboss_download_dir }}"
+  - "{{ install_wildfly_dir }}"
+  - "{{ install_mdm_dir }}"
+software_download_dict:
+  "{{ jboss_installer_url }}": "{{ software_location }}"
+software_unarchive_dict:
+  "{{ software_location }}/{{ jboss_software_archive }}": "{{ jboss_unzip_dir }}"
+install_mdm_dir: "{{ mdm_root_dir }}/tibco/tib_install_base/tibsw/2019"
+install_wildfly_dir: "/app/tibco/tib_install_base/tibsw/2019"
+jboss_installer_url: "{{ artificatory_url }}{{ jboss_software_archive }}"
+jboss_software_archive: wildfly-10.1.0.Final.zip
+jboss_unzip_dir: "{{ install_wildfly_dir }}"
+software_location: /app/tibco/software
+jboss_download_dir: "{{ software_location }}/jboss"
+jboss_filesystem_git_replacement_dict:
+   "{{ software_location }}/repo/WildFly/ojdbc6.jar": "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/modules/system/layers/base/com/oracle/ojdbc6/main/"
+   "{{ software_location }}/repo/WildFly/module.xml": "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/modules/system/layers/base/com/oracle/ojdbc6/main/"
+   "{{ software_location }}/repo/WildFly/mgmt-groups.properties": "{{install_wildfly_dir }}/wildfly-10.1.0.Final/standalone/configuration/"
+   "{{ software_location }}/repo/WildFly/mgmt-users.properties": "{{install_wildfly_dir }}/wildfly-10.1.0.Final/standalone/configuration/"
+java_software: jdk1.8.0_121.tar 
+java_installer_url: "{{ artificatory_url }}{{ java_software }}" 
+java_unzip_dir: "/app/"
+ecm_ear_artifactory_url: "{{ artificatory_url }}ECM.ear"
+ecm_ear_location: "{{ install_wildfly_dir }}/wildfly-10.1.0.Final/standalone/deployments/"
+tibco_module_url: "{{ artificatory_url }}tibco.tar"
+tibco_module_unzip: "{{install_wildfly_dir }}/wildfly-10.1.0.Final/modules/system/layers/base/com"
+tibco_archive: tibco.tar

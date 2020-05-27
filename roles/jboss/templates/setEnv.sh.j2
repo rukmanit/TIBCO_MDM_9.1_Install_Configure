@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export JAVA_HOME={{ java_unzip_dir }}jdk1.8.0_121
+export MQ_HOME={{ install_mdm_dir }}/mdm/9.1
+export MQ_COMMON_DIR=$MQ_HOME/common
+export MQ_LOG={{ install_wildfly_dir }}/wildfly-10.1.0.Final/log
+export MQ_CONFIG_FILE=$MQ_HOME/config/ConfigValues.xml
+export NODE_ID={{ NODE_ID }}
+export JBOSS_HOME={{ install_wildfly_dir }}/wildfly-10.1.0.Final
+export ANT_HOME=$MQ_HOME/bin/buildTool
+export ORACLE_HOME=/app/oracle/client
+export PATH=$ANT_HOME/bin:$JAVA_HOME/bin:$ORACLE_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$$ORACLE_HOME/lib:$LD_LIBRARY_PATH
+export CLASSPATH=$JAVA_HOME/lib
+export NLS_LANG=AMERICAN_AMERICA.UTF8

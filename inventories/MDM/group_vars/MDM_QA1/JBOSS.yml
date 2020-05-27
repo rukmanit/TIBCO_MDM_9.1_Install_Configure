@@ -1,0 +1,6 @@
+jvm_min: 2048m
+jvm_max: 2048m
+meta_space: 256m
+mdm_root_dir: /app # default value for non-Cluster installation.
+install_mdm_dir: /app/tibco/tib_install_base/tibsw/2019
+install_wildfly_dir: /app/tibco/tib_install_base/tibsw/2019
